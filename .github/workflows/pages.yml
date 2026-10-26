@@ -1,7 +1,6 @@
-# Optional: host the frontend on GitHub Pages while the API runs elsewhere (e.g. Render).
-# Enable it by setting repository variable VITE_API_BASE_URL (Settings → Secrets and variables →
-# Actions → Variables) to your backend URL, e.g. https://mausam-ai.onrender.com, and setting
-# Settings → Pages → Source to "GitHub Actions". Also add your Pages origin to the backend's ALLOWED_ORIGINS.
+# Hosts the frontend on GitHub Pages; the API runs on Render (see render.yaml).
+# One-time setup: Settings → Pages → Source → "GitHub Actions".
+# The backend URL below can be overridden with the repository variable VITE_API_BASE_URL.
 name: Deploy frontend to GitHub Pages
 
 on:
@@ -20,7 +19,6 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ vars.VITE_API_BASE_URL != '' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -36,7 +34,7 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
-          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://mausam-ai.onrender.com' }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist

@@ -79,31 +79,20 @@ The API key is only ever read by the backend. The browser calls `/api/*` and nev
 ## Deploying with GitHub
 
 ```bash
-git init && git add . && git commit -m "Mausam AI"
-git branch -M main
-git remote add origin https://github.com/<you>/mausam-ai.git
-git push -u origin main
+git clone https://github.com/Optimus2007/mausam-ai.git
 ```
 
 **CI** (`.github/workflows/ci.yml`) runs the backend tests and the frontend build on every push and pull request.
 
-### Option A (recommended): one service on Render, deployed from GitHub
+### Live setup: frontend on GitHub Pages + API on Render
 
-GitHub Pages only serves static files, so the FastAPI backend needs a host. `render.yaml` sets this up:
+GitHub Pages only serves static files, so the FastAPI backend (which holds the OpenWeather key) runs on Render's free tier.
 
-1. Go to <https://dashboard.render.com/blueprints>, choose **New Blueprint Instance**, and pick your GitHub repo.
-2. When prompted, enter `OPENWEATHER_API_KEY`. Render stores it as a secret.
-3. Render builds the `Dockerfile` (frontend and API in one container) and redeploys on every push to `main`.
+1. **Backend:** at <https://dashboard.render.com/blueprints>, choose **New Blueprint Instance** and pick this repo. `render.yaml` builds the `Dockerfile` and redeploys on every push to `main`. The service starts in labelled demo mode.
+2. **Weather key:** in Render, open **mausam-ai → Environment** and add `OPENWEATHER_API_KEY`. The service restarts and switches to live weather.
+3. **Frontend:** in GitHub, go to **Settings → Pages → Source** and choose **GitHub Actions**. `.github/workflows/pages.yml` publishes `https://optimus2007.github.io/mausam-ai/` on every push and calls the API at `https://mausam-ai.onrender.com`. To use a different URL, set the repository variable `VITE_API_BASE_URL`.
 
-On the free tier the service sleeps when idle. The first request can take about 50 seconds, and the UI shows a "waking up" message while it waits.
-
-### Option B: frontend on GitHub Pages, API on Render
-
-1. Deploy the backend as in Option A.
-2. In GitHub, go to **Settings → Pages → Source** and choose **GitHub Actions**.
-3. Under **Settings → Secrets and variables → Actions → Variables**, add `VITE_API_BASE_URL` = your Render URL.
-4. In Render, add `https://<you>.github.io` to `ALLOWED_ORIGINS`.
-5. Push to `main`. `.github/workflows/pages.yml` builds with the correct base path and publishes the site to `https://<you>.github.io/<repo>/`.
+On the free tier the API sleeps when idle. The first request can take about 50 seconds, and the UI shows a "waking up" message while it waits.
 
 The app uses hash routing (`/#/planner`), so deep links work on Pages without any server rewrites.
 

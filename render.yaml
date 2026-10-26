@@ -1,5 +1,8 @@
 # Render Blueprint — connect this GitHub repo at https://dashboard.render.com/blueprints
 # Render builds the Dockerfile and redeploys on every push to main.
+#
+# The service starts in labelled DEMO MODE. To go live, add OPENWEATHER_API_KEY in
+# Render → mausam-ai → Environment (it is stored as a secret and never reaches the browser).
 services:
   - type: web
     name: mausam-ai
@@ -8,11 +11,9 @@ services:
     autoDeploy: true
     healthCheckPath: /api/health
     envVars:
-      - key: OPENWEATHER_API_KEY
-        sync: false # you'll be prompted for the value in the Render dashboard (kept secret)
       - key: OPENWEATHER_ONECALL
         value: auto
       - key: ALLOWED_ORIGINS
-        value: http://localhost:5173 # add https://<user>.github.io if you also use GitHub Pages
+        value: https://optimus2007.github.io,http://localhost:5173
       - key: RATE_LIMIT_PER_MINUTE
         value: "90"
