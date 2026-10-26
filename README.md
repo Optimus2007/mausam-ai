@@ -69,7 +69,7 @@ Frontend (build time, **public**, so never put secrets here):
 
 | Variable | Purpose |
 |---|---|
-| `VITE_API_BASE_URL` | Only when the frontend is hosted separately from the API, e.g. `https://mausam-ai.onrender.com`. |
+| `VITE_API_BASE_URL` | Only when the frontend is hosted separately from the API, e.g. `https://mausam-ai-htrr.onrender.com`. |
 | `VITE_BASE` | Base path for the build, e.g. `/mausam-ai/` on GitHub Pages. Defaults to `/`. |
 
 The API key is only ever read by the backend. The browser calls `/api/*` and never sees the key.
@@ -90,7 +90,7 @@ GitHub Pages only serves static files, so the FastAPI backend (which holds the O
 
 1. **Backend:** at <https://dashboard.render.com/blueprints>, choose **New Blueprint Instance** and pick this repo. `render.yaml` builds the `Dockerfile` and redeploys on every push to `main`. The service starts in labelled demo mode.
 2. **Weather key:** in Render, open **mausam-ai → Environment** and add `OPENWEATHER_API_KEY`. The service restarts and switches to live weather.
-3. **Frontend:** in GitHub, go to **Settings → Pages → Source** and choose **GitHub Actions**. `.github/workflows/pages.yml` publishes `https://optimus2007.github.io/mausam-ai/` on every push and calls the API at `https://mausam-ai.onrender.com`. To use a different URL, set the repository variable `VITE_API_BASE_URL`.
+3. **Frontend:** in GitHub, go to **Settings → Pages → Source** and choose **GitHub Actions**. `.github/workflows/pages.yml` publishes `https://optimus2007.github.io/mausam-ai/` on every push and calls the API at `https://mausam-ai-htrr.onrender.com`. To use a different URL, set the repository variable `VITE_API_BASE_URL`.
 
 On the free tier the API sleeps when idle. The first request can take about 50 seconds, and the UI shows a "waking up" message while it waits.
 

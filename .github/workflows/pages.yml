@@ -34,7 +34,7 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
-          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://mausam-ai.onrender.com' }}
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://mausam-ai-htrr.onrender.com' }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist
