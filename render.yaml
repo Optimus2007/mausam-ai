@@ -1,0 +1,18 @@
+# Render Blueprint — connect this GitHub repo at https://dashboard.render.com/blueprints
+# Render builds the Dockerfile and redeploys on every push to main.
+services:
+  - type: web
+    name: mausam-ai
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: OPENWEATHER_API_KEY
+        sync: false # you'll be prompted for the value in the Render dashboard (kept secret)
+      - key: OPENWEATHER_ONECALL
+        value: auto
+      - key: ALLOWED_ORIGINS
+        value: http://localhost:5173 # add https://<user>.github.io if you also use GitHub Pages
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "90"
